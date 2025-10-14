@@ -1,29 +1,44 @@
 const movies = [
-    { title: "Stranger Things", image: "https://i.imgur.com/J5LVHEL.jpg" },
-    { title: "Money Heist", image: "https://i.imgur.com/L0FhCxn.jpg" },
-    { title: "The Witcher", image: "https://i.imgur.com/z3aKuzb.jpg" },
-    { title: "Dark", image: "https://i.imgur.com/5xXvXk9.jpg" },
-    { title: "Squid Game", image: "https://i.imgur.com/0FqLM0G.jpg" }
+  { title: "Extraction", img: "https://m.media-amazon.com/images/M/MV5BY2ZjZTJlYTIt.jpg" },
+  { title: "Stranger Things", img: "https://m.media-amazon.com/images/M/MV5BYTcw.jpg" },
+  { title: "Money Heist", img: "https://m.media-amazon.com/images/M/MV5BMjQwYz.jpg" },
+  { title: "Wednesday", img: "https://m.media-amazon.com/images/M/MV5BZTA2.jpg" },
+  { title: "Squid Game", img: "https://m.media-amazon.com/images/M/MV5BZTBl.jpg" },
+  { title: "The Witcher", img: "https://m.media-amazon.com/images/M/MV5BM2Q1.jpg" },
+  { title: "Dark", img: "https://m.media-amazon.com/images/M/MV5BYjBm.jpg" },
 ];
 
-const container = document.getElementById('movieContainer');
-
-movies.forEach(movie => {
+// Display movies
+const movieRow = document.getElementById('movie-row');
+function showMovies(list) {
+  movieRow.innerHTML = "";
+  list.forEach(movie => {
     const card = document.createElement('div');
     card.classList.add('movie-card');
+    card.style.backgroundImage = `url(${movie.img})`;
+    card.dataset.title = movie.title;
+    movieRow.appendChild(card);
+  });
+}
+showMovies(movies);
 
-    const img = document.createElement('img');
-    img.src = movie.image;
-    card.appendChild(img);
-
-    const title = document.createElement('p');
-    title.innerText = movie.title;
-    card.appendChild(title);
-
-    container.appendChild(card);
+// Search functionality
+const search = document.getElementById('search');
+search.addEventListener('input', e => {
+  const value = e.target.value.toLowerCase();
+  const filtered = movies.filter(m => m.title.toLowerCase().includes(value));
+  showMovies(filtered);
 });
 
-// Play Button
-document.getElementById('playBtn').addEventListener('click', () => {
-    alert("Play button clicked! Feature coming soon.");
+// Theme toggle
+const toggle = document.getElementById('theme-toggle');
+toggle.addEventListener('click', () => document.body.classList.toggle('light'));
+
+// Dynamic banner change on hover
+const banner = document.querySelector('.banner');
+movieRow.addEventListener('mouseover', e => {
+  if (e.target.classList.contains('movie-card')) {
+    const img = e.target.style.backgroundImage.slice(5, -2);
+    banner.style.backgroundImage = `url(${img})`;
+  }
 });
